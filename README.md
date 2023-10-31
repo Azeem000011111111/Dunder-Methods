@@ -1,6 +1,6 @@
 # Dunder-Methods
 
-## some common dunder methods in python
+## some common dunder methods in python and their usage
 
 <table>
   <thead>
@@ -83,3 +83,111 @@
     </tr>
   </tbody>
 </table>
+
+
+
+# __init__()
+    class MyClass:
+        def __init__(self, name):
+            self.name = name
+    
+    my_object = MyClass("John")
+
+# __new__()
+    class MyClass:
+        def __new__(cls, name):
+            # Create a new object instance
+            my_class_object = object.__new__(cls)
+    
+            # Initialize the object
+            my_class_object.name = name
+    
+            return my_class_object
+
+my_class_object = MyClass.__new__(MyClass, "John")
+
+# __del__()
+    class MyClass:
+        def __del__(self):
+            # Clean up the object
+            print("Deleting object {}".format(self.name))
+    
+    my_object = MyClass("John")
+    del my_object
+
+# __repr__()
+    class MyClass:
+        def __repr__(self):
+            return "MyClass({})".format(self.name)
+    
+    my_object = MyClass("John")
+    print(repr(my_object))
+
+# __str__()
+    class MyClass:
+        def __str__(self):
+            return "MyClass object with name {}".format(self.name)
+    
+    my_object = MyClass("John")
+    print(str(my_object))
+
+# __getattr__()
+      class MyClass:
+          def __getattr__(self, name):
+              # Get the attribute from a dictionary
+              return self._dict[name]
+      
+      my_object = MyClass()
+      my_object._dict["name"] = "John"
+      print(my_object.name)
+
+# __setattr__()
+    class MyClass:
+        def __setattr__(self, name, value):
+            # Validate the value
+            if not isinstance(value, str):
+                raise ValueError("Attribute {} must be a string".format(name))
+    
+            # Set the attribute in a dictionary
+            self._dict[name] = value
+    
+    my_object = MyClass()
+    my_object._dict["name"] = "John"
+
+
+# __delitem__()
+      class MyClass:
+          def __delitem__(self, index):
+              # Delete the item from a list
+              del self._list[index]
+      
+      my_object = MyClass([1, 2, 3])
+      del my_object[0]
+      print(my_object)
+
+# __iter__()
+      class MyClass:
+          def __iter__(self):
+              return iter(self._list)
+      
+      my_object = MyClass([1, 2, 3])
+      for item in my_object:
+          print(item)
+
+# __next__()
+      class MyClass:
+        def __next__(self):
+            # Return the next item in the iterator
+            try:
+                return self._list[self._index]
+            except IndexError:
+                raise StopIteration()
+      
+      my_object = MyClass([1, 2, 3])
+      my_object._index = 0
+      while True:
+        try:
+            print(my_object.__next__())
+        except StopIteration:
+            break
+
